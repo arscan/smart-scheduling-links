@@ -1,0 +1,16 @@
+name: Validate against Inferno
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  docker_test:
+    name: Validate against inferno
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: "docker-compose -f ./.github/inferno/docker-compose.yml run inferno bundle exec rake db:create db:migrate inferno:execute[https://raw.githubusercontent.com/smart-on-fhir/smart-scheduling-links/master/examples/,smart_scheduling_links,SmartSchedulingLinksBasic]"
